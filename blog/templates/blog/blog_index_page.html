@@ -1,0 +1,51 @@
+<!-- @format -->
+
+{% extends "base.html" %} {% load wagtailcore_tags %} {% block body_class %}template-blogindexpage{% endblock %} {% block content %}
+
+
+
+<header class="masthead">
+  <div class="container position-relative px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+      <div class="col-md-10 col-lg-8 col-xl-7">
+        <div class="site-heading">
+          <h1>{{ page.title }}</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="container px-4 px-lg-5">
+  <div class="row gx-4 gx-lg-5 justify-content-center">
+    <div class="col-md-10 col-lg-8 col-xl-7">
+      {% for post in posts %} {% with post=post.specific %}
+
+      <!-- Post preview-->
+      <div class="post-preview">
+        <a href="{% pageurl post %}">
+          <h2 class="post-title">{{ post.title }}</h2>
+          <h3 class="post-subtitle">Posted on {{post.date}}</h3>
+        </a>
+      </div>
+
+      <hr class="my-4" />
+
+      {% endwith %} 
+      {% endfor %}
+      <div class="d-flex justify-content-center mb-4">
+        {% if posts.paginator.num_pages > 1 %}
+          {% if posts.has_previous %}
+            <a class="btn btn-primary text-uppercase me-4" href="?page={{posts.previous_page_number}}">← newer Posts </a>
+          {% endif %}
+          {% for page_num in posts.paginator.page_range %}
+             <a class="btn btn-primary text-uppercase mx-1 {% if page_num == posts.number %} active {% endif %}" href="?page={{page_num}}">{{page_num}}</a>
+          {% endfor %}
+          {% if posts.has_next %}
+            <a class="btn btn-primary text-uppercase ms-4" href="?page={{posts.next_page_number}}">Older Posts →</a>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
